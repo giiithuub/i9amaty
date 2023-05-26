@@ -74,9 +74,14 @@ if (isset($_SESSION['message'])) {
                             </div>
 
                             <div class="col-md-6">
-                                <label class="mb-0 fw-bold text-dark" for="room_type">Enter Room Type</label>
-                                <input type="text" required name="room_type" placeholder="Enter Room Type" class="form-control mb-3" value="<?= $data['room_type'];?>">
-                            </div>
+                            <label class="mb-0 fw-bold text-dark" for="room_type">Room Type</label>
+                            <select name="room_type" required class="form-control mb-3">
+                                <option value="single" <?= $data['room_type'] == "single" ? 'selected' : ''?>>Single Room</option>
+                                <option value="double" <?= $data['room_type'] == "double" ? 'selected' : ''?>>Double Room</option>
+                                <option value="shared" <?= $data['room_type'] == "shared" ? 'selected' : ''?>>Shared Room</option>
+                            </select>
+                        </div>
+
 
                             <div class="col-md-6">
                                 <label class="mb-0" for="unv_id">University Stay</label>

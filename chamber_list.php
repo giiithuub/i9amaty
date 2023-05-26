@@ -95,7 +95,7 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
                             <div class="single_product_item">
                                 <img src="admin/<?php echo $firstImage; ?>" alt="#" class="img-fluid">
                                 <h3><a href="single-product.html"><?php echo $chamber['name']; ?></a></h3>
-                                <p>UniStay: <?php echo $chamber['unv']; ?></p>
+                                <p>UniStay: <?php echo $chamber['unv_name']; ?></p>
                                 <p>Room Type: <?php echo $chamber['room_type']; ?></p>
                                 <p>Price: $<?php echo $chamber['price']; ?>/month</p>
                                 <a href="#" class="btn_3">Book Now</a>

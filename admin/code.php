@@ -16,6 +16,12 @@
         $contact_email = $_POST['contact_email'];
         $contact_phone = $_POST['contact_phone'];
     
+        $city = $_POST['city'];
+        $state = $_POST['state'];
+        $country = $_POST['country'];
+        $lat = $_POST['lat'];
+        $lng = $_POST['lng'];
+
         $images = [];
         if (isset($_FILES['images'])) {
             foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
@@ -31,8 +37,9 @@
         }
         $imagesStr = implode(",", $images);
     
-        $query = "INSERT INTO university_stays (name, description, address, gym, resturant, library, total_chambers, price_range, contact_person, contact_email, contact_phone, images)
-                  VALUES ('$name', '$description', '$address', '$gym', '$resturant', '$library', '$total_chambers', '$price_range', '$contact_person', '$contact_email', '$contact_phone', '$imagesStr')";
+        $query = "INSERT INTO university_stays (name, description, address, gym, resturant, library, total_chambers, price_range, contact_person, contact_email, contact_phone, images, city, state, country, lat, lng)
+    VALUES ('$name', '$description', '$address', '$gym', '$resturant', '$library', '$total_chambers', '$price_range', '$contact_person', '$contact_email', '$contact_phone', '$imagesStr', '$city', '$state', '$country', '$lat', '$lng')";
+
     
         $query_run = mysqli_query($con, $query);
     

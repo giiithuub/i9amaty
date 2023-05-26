@@ -61,9 +61,15 @@ include('includes/header.php');
                                 <input type="number" required name="price" placeholder="Enter price" class="form-control mb-3 ">
                             </div>
                             <div class="col-md-6">
-                                <label class="mb-0 fw-bold text-dark " for="room_type">Enter Room Type</label>
-                                <input type="text" required name="room_type" placeholder="Enter Room Type" class="form-control mb-3 ">
-                            </div>
+                            <label class="mb-0 fw-bold text-dark " for="room_type">Select Room Type</label>
+                            <select name="room_type" class="form-select mb-3" aria-label="Default select example">
+                                <option value="">Select Room Type</option>
+                                <option value="Room Type 1">Single Room</option>
+                                <option value="Room Type 2">Double Room </option>
+                                <option value="Room Type 3">Shared Room </option>
+                            </select>
+                        </div>
+
                             <div class="col-md-12">
                                 <label class="mb-0 fw-bold text-dark " for="images">Upload Images</label>
                                 <input type="file" name="images[]" multiple class="form-control mb-3 ">
@@ -120,6 +126,7 @@ include('includes/header.php');
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary" name="add_chamber_btn">Save</button>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -156,6 +163,27 @@ include('includes/header.php');
             [].forEach.call(files, readAndPreview);
         }
     };
+
+
+    $(function() {
+ 
+ $('#us2').locationpicker({
+    location: {latitude: 46.15242437752303, longitude: 2.7470703125},   
+    radius: 0,
+    inputBinding: {
+       latitudeInput: $('#lat'),
+       longitudeInput: $('#lng'),
+       locationNameInput: $('#location')
+    },
+    enableAutocomplete: true,
+    onchanged: function(currentLocation, radius, isMarkerDropped) {
+       alert("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+     }
+ });
+  
+  
+ });
+ 
 </script>
 
 <?php include('includes/footer.php');?>

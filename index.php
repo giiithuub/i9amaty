@@ -38,48 +38,38 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
     </section>
     <!-- banner part end-->
 
-    <!-- Popular Choices start-->
-    <section class="popular_choices">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section_tittle text-center">
-                        <h2>Popular Choices</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <div class="single_product_item_thumb">
-                            <img src="img/popular_choice_1.jpg" alt="#" class="img-fluid">
-                        </div>
-                        <h3> <a href="single-chamber.html">Comfortable Chamber 1</a> </h3>
-                        <p>From $100/month</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <div class="single_product_item_thumb">
-                            <img src="img/popular_choice_2.jpg" alt="#" class="img-fluid">
-                        </div>
-                        <h3> <a href="single-chamber.html">Luxurious Chamber</a> </h3>
-                        <p>From $150/month</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single_product_item">
-                        <div class="single_product_item_thumb">
-                            <img src="img/popular_choice_1.jpg" alt="#" class="img-fluid">
-                        </div>
-                        <h3> <a href="single-chamber.html">Spacious Chamber</a> </h3>
-                        <p>From $120/month</p>
-                    </div>
+   <!-- Popular Choices start-->
+<section class="popular_choices">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section_tittle text-center">
+                    <h2>Popular Choices</h2>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Popular Choices end-->
+        <div class="row">
+            <?php 
+            $universityStays = getAll("university_stays"); // Use the appropriate table name
+            while($row = mysqli_fetch_assoc($universityStays)){
+                $images = explode(",", $chamber['images']);
+                $firstImage = count($images) > 0 ? $images[0] : '';
+            ?>
+            <div class="col-lg-4 col-sm-6">
+                <div class="single_product_item">
+                    <div class="single_product_item_thumb">
+                        <img src="img/<?= $row['firstImage'] ?>" alt="#" class="img-fluid"> <!-- replace 'image' with the appropriate column name -->
+                    </div>
+                    <h3> <a href="single-chamber.html"><?= $row['name'] ?></a> </h3> <!-- replace 'name' with the appropriate column name -->
+                    
+                </div>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+</section>
+<!-- Popular Choices end-->
+
 
     <!-- Features part here -->
   <section class="features_part section_padding">
