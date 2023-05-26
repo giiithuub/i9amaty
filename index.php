@@ -38,30 +38,30 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
     </section>
     <!-- banner part end-->
 
-   <!-- Popular Choices start-->
-<section class="popular_choices">
+ <!-- Popular Choices start-->
+<section class="popular_choices pt-5 pb-5">
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-lg-12">
-                <div class="section_tittle text-center">
+                <div class="section_tittle text-center pb-5">
                     <h2>Popular Choices</h2>
                 </div>
             </div>
         </div>
         <div class="row">
             <?php 
-            $universityStays = getAll("university_stays"); // Use the appropriate table name
+            $universityStays = getAll("university_stays");
             while($row = mysqli_fetch_assoc($universityStays)){
-                $images = explode(",", $chamber['images']);
+                $images = explode(",", $row['images']);
                 $firstImage = count($images) > 0 ? $images[0] : '';
             ?>
-            <div class="col-lg-4 col-sm-6">
-                <div class="single_product_item">
-                    <div class="single_product_item_thumb">
-                        <img src="img/<?= $row['firstImage'] ?>" alt="#" class="img-fluid"> <!-- replace 'image' with the appropriate column name -->
+            <div class="col-lg-4 col-sm-6 mb-4 d-flex align-items-stretch">
+                <div class="card shadow-lg rounded" style="width: 26rem;">
+                    <img src="admin/<?= $firstImage ?>" class="card-img-top" alt="#">
+                    <div class="card-body d-flex flex-column justify-content-center text-center">
+                        <h3 style="color : #4B3049 ;"><a style="color : #4B3049 ;" href="single-chamber.html"><?= $row['name'] ?></a></h3> 
+                        <a href="unv_stay.php?id=<?= $row['id']?>" class="btn btn_3 mt-3 align-self-center">Explore</a>
                     </div>
-                    <h3> <a href="single-chamber.html"><?= $row['name'] ?></a> </h3> <!-- replace 'name' with the appropriate column name -->
-                    
                 </div>
             </div>
             <?php } ?>
@@ -69,6 +69,8 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
     </div>
 </section>
 <!-- Popular Choices end-->
+
+
 
 
     <!-- Features part here -->

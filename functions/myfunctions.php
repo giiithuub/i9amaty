@@ -47,13 +47,13 @@ function getSlugActive($table, $slug)
     return $query_run = mysqli_query($con, $query);
 }
 
-function getTripsByCategory($category_id)
-{
+function getChambersByUniversityStay($unv_id) {
     global $con;
-    $query = "SELECT * FROM trips WHERE category_id='$category_id'";
+    $query = "SELECT * FROM chambers WHERE unv_id='$unv_id'";
 
     return $query_run = mysqli_query($con, $query);
 }
+
 
 function redirect($url, $message)
 {
