@@ -25,7 +25,7 @@ include('includes/header.php');
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-0" for="">University Stay</label>
-                                <select name="category_id" class="form-select mb-2" aria-label="Default select example">
+                                <select name="unv_id" class="form-select mb-2" aria-label="Default select example">
                                     <option selected>Select University Stay</option>
                                     <?php
                                     $university_stays = getAll("university_stays");
@@ -35,6 +35,7 @@ include('includes/header.php');
                                             ?>
                                             <option value="<?= $unv['id']; ?>"><?= $unv['name']; ?></option>
                                         <?php
+                                        
                                         }
                                     } else {
                                         echo "No University stays Available";
@@ -42,6 +43,7 @@ include('includes/header.php');
                                     ?>
                                 </select>
                             </div>
+                            <input type="hidden" name="unv" value="<?=$unv['name'];?>">
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark " for="slug">Slug</label>
                                 <input type="text" required placeholder="Enter slug" name="slug" class="form-control mb-3  ">
@@ -54,9 +56,13 @@ include('includes/header.php');
                                 <label class="mb-0 fw-bold text-dark " for="description">Description</label>
                                 <textarea name="description" required rows="3" placeholder="Enter description" class="form-control mb-3 "></textarea>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark " for="price">Price</label>
                                 <input type="number" required name="price" placeholder="Enter price" class="form-control mb-3 ">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="mb-0 fw-bold text-dark " for="room_type">Enter Room Type</label>
+                                <input type="text" required name="room_type" placeholder="Enter Room Type" class="form-control mb-3 ">
                             </div>
                             <div class="col-md-12">
                                 <label class="mb-0 fw-bold text-dark " for="images">Upload Images</label>
