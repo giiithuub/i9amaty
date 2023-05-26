@@ -28,20 +28,21 @@ function getAll($table)
     return $query_run = mysqli_query($con, $query);
 }
 
-
 function getByID($table, $id)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE id='$id' AND status='0'";
+    $query = "SELECT * FROM $table WHERE id='$id' ";
 
-    return $query_run = mysqli_query($con, $query);
-    
+    $query_run = mysqli_query($con, $query);
+
+    return mysqli_fetch_assoc($query_run);
 }
+
 
 function getSlugActive($table, $slug)
 {
     global $con;
-    $query = "SELECT * FROM $table WHERE slug='$slug' AND status='0' LIMIT 1";
+    $query = "SELECT * FROM $table WHERE slug='$slug' LIMIT 1";
 
     return $query_run = mysqli_query($con, $query);
 }
@@ -49,7 +50,7 @@ function getSlugActive($table, $slug)
 function getTripsByCategory($category_id)
 {
     global $con;
-    $query = "SELECT * FROM trips WHERE category_id='$category_id' AND status='0'";
+    $query = "SELECT * FROM trips WHERE category_id='$category_id'";
 
     return $query_run = mysqli_query($con, $query);
 }

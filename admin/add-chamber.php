@@ -43,7 +43,7 @@ include('includes/header.php');
                                     ?>
                                 </select>
                             </div>
-                            <input type="hidden" name="unv" value="<?=$unv['name'];?>">
+
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark " for="slug">Slug</label>
                                 <input type="text" required placeholder="Enter slug" name="slug" class="form-control mb-3  ">

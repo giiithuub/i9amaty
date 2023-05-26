@@ -51,6 +51,14 @@
         $small_description = $_POST['small_description'];
         $description = $_POST['description'];
         $price = $_POST['price'];
+        $unv_id = $_POST['unv_id'];
+       
+        $room_type = $_POST['room_type'];
+
+        $unv = getByID("university_stays", $unv_id);
+        $unv_name = $unv['name'];
+    
+    
         $status = isset($_POST['status']) ? 1 : 0;
         $capacity = $_POST['capacity'];
         $bathroom = isset($_POST['bathroom']) ? 1 : 0;
@@ -78,8 +86,8 @@
         }
         $imagesStr = implode(",", $images);
     
-        $query = "INSERT INTO chambers (name, slug, small_description, description, price, status, capacity, bathroom, kitchen, ac, heating, furnished, size, balcony, laundry, pet_friendly, images)
-                  VALUES ('$name', '$slug', '$small_description', '$description', '$price', '$status', '$capacity', '$bathroom', '$kitchen', '$ac', '$heating', '$furnished', '$size', '$balcony', '$laundry', '$pet_friendly', '$imagesStr')";
+        $query = "INSERT INTO chambers (name, slug, small_description, description, price, status, capacity, bathroom, kitchen, ac, heating, furnished, size, balcony, laundry, pet_friendly, images, unv_id, unv_name, room_type)
+                  VALUES ('$name', '$slug', '$small_description', '$description', '$price', '$status', '$capacity', '$bathroom', '$kitchen', '$ac', '$heating', '$furnished', '$size', '$balcony', '$laundry', '$pet_friendly', '$imagesStr', '$unv_id', '$unv_name', '$room_type')";
     
         $query_run = mysqli_query($con, $query);
         
@@ -105,6 +113,14 @@
         $small_description = mysqli_real_escape_string($con, $_POST['small_description']);
         $description = mysqli_real_escape_string($con, $_POST['description']);
         $price = mysqli_real_escape_string($con, $_POST['price']);
+         // new variables from the form
+        $unv_id = mysqli_real_escape_string($con, $_POST['unv_id']);
+        $unv = getByID("university_stays", $unv_id);
+        $unv_name = $unv['name'];
+    
+        $room_type = mysqli_real_escape_string($con, $_POST['room_type']);
+        
+        
         $capacity = mysqli_real_escape_string($con, $_POST['capacity']);
         $size = mysqli_real_escape_string($con, $_POST['size']);
         $bathroom = isset($_POST['bathroom']) ? 1 : 0;
@@ -137,7 +153,7 @@
         $images = implode(",", $old_images);
     
         // Update the database
-        $query = "UPDATE chambers SET name='$name', slug='$slug', small_description='$small_description', description='$description', price='$price', capacity='$capacity', size='$size', bathroom='$bathroom', kitchen='$kitchen', ac='$ac', heating='$heating', furnished='$furnished', balcony='$balcony', laundry='$laundry', pet_friendly='$pet_friendly', images='$images' WHERE id='$chamber_id'";
+        $query = "UPDATE chambers SET name='$name', slug='$slug', small_description='$small_description', description='$description', price='$price', capacity='$capacity', size='$size', bathroom='$bathroom', kitchen='$kitchen', ac='$ac', heating='$heating', furnished='$furnished', balcony='$balcony', laundry='$laundry', pet_friendly='$pet_friendly', images='$images', unv_id='$unv_id', unv_name='$unv_name', room_type='$room_type' WHERE id='$chamber_id'";
         
         if (mysqli_query($con, $query)) {
             // Redirect to some success page
