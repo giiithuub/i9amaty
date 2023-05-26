@@ -98,7 +98,7 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
                                 <p>UniStay: <?php echo $chamber['unv_name']; ?></p>
                                 <p>Room Type: <?php echo $chamber['room_type']; ?></p>
                                 <p>Price: $<?php echo $chamber['price']; ?>/month</p>
-                                <a href="#" class="btn_3">Book Now</a>
+                                <a href="single-chamber.php?id=<?= $chamber['id']?>"  class="btn_3">Book Now</a>
                             </div>
                         </div>
 

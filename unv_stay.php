@@ -41,7 +41,7 @@ $unv_id = isset($_GET['unv_id']) ? $_GET['unv_id'] : ''; // Get the 'unv_id' par
                                 <p>UniStay: <?php echo $chamber['unv_name']; ?></p>
                                 <p>Room Type: <?php echo $chamber['room_type']; ?></p>
                                 <p>Price: $<?php echo $chamber['price']; ?>/month</p>
-                                <a href="#" class="btn_3">Book Now</a>
+                                <a href="unv_stay.php?id=<?= $chamber['id']?>" class="btn_3">Book Now</a>
                             </div>
                         </div>
 
