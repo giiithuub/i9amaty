@@ -98,8 +98,12 @@ include('config/dbcon.php');
         <div class="billing_details pt-5">
           <div class="row">
             <div class="col-lg-8">
-              <h3>Billing Details</h3>
-              <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+              <h3>Reservation Details</h3>
+              <form class="row contact_form" action="functions/reservation_handler.php" method="post">
+              <input type="hidden" name="chamber_id" value="<?php echo $chamberId; ?>">
+                <input type="hidden" name="unv_id" value="<?php echo $chamber['unv_id']; ?>">
+                <input type="hidden" name="total" value="<?php echo $total; ?>">
+                <input type="hidden" name="num_days" value="<?php echo $numDays; ?>">
                 <div class="col-md-6 form-group p_star">
                   <input type="text" class="form-control" id="first" name="first_name" required />
                   <span class="placeholder" data-placeholder="First name"></span>
@@ -117,7 +121,7 @@ include('config/dbcon.php');
                   <span class="placeholder" data-placeholder="Address line"></span>
                 </div>
                 <div class="col-md-12 form-group p_star">
-                  <input type="text" class="form-control" id="add2" name="address_line2" required />
+                  <input type="text" class="form-control" id="add2" name="city" required />
                   <span class="placeholder" data-placeholder="Town/City"></span>
                 </div>
                 <div class="col-md-12 form-group p_star">
@@ -146,7 +150,7 @@ include('config/dbcon.php');
                     <small class="text-danger" id="date-error" style="display: none;">End date should be after the start date.</small>
                 </div>
                 <div class="col-md-12 form-group">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="genric-btn primary circle">Submit</button>
                 </div>
               </form>
             </div>
@@ -163,16 +167,12 @@ include('config/dbcon.php');
                       <th scope="col">Total</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tfoot>
                   <th colspan="2"><span><?php echo $chamber['name']; ?></span></th>
                     <th><span id="duration">days</span></th>
-                    <th><span id="total">DZD 0.00</span></th>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th scope="col" colspan="3">Quantity</th>
-                      <th scope="col">Total</th>
-                    </tr>
+                    <th><span id="total" class="text-dark">DZD 0.00</span></th>
+            
+                 
                   </tfoot>
                 </table>
               </div>
@@ -250,26 +250,35 @@ include('config/dbcon.php');
 
 
 $(document).ready(function() {
-    var pricePerNight = $("#price_per_night").val();
+  var pricePerNight = $("#price_per_night").val();
 
-    // When either date input changes
-    $("#start_date, #end_date").change(function() {
-        var startDate = new Date($("#start_date").val());
-        var endDate = new Date($("#end_date").val());
+  // When either date input changes
+  $("#start_date, #end_date").change(function() {
+    var startDate = new Date($("#start_date").val());
+    var endDate = new Date($("#end_date").val());
 
-        if(startDate != "" && endDate != ""){
-            var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
-            var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    if (startDate != "" && endDate != "") {
+      var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+      var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-            // Update the duration and total
-            $("#duration").text( numDays + 'Days' );
-            $("#total").text('DZD ' + (numDays * pricePerNight).toFixed(2));
-        } else {
-            $("#duration").text('0 days');
-            $("#total").text('DZD 0.00');
-        }
-    });
+      // Update the duration and total
+      $("#duration").text(numDays + ' Days');
+      $("#total").text('DZD ' + (numDays * pricePerNight).toFixed(2));
+
+      // Update the hidden inputs
+      $("input[name='total']").val(numDays * pricePerNight);
+      $("input[name='num_days']").val(numDays);
+    } else {
+      $("#duration").text('0 days');
+      $("#total").text('DZD 0.00');
+
+      // Reset the hidden inputs
+      $("input[name='total']").val(0);
+      $("input[name='num_days']").val(0);
+    }
+  });
 });
+
 
 
 
