@@ -20,18 +20,22 @@ $unv_id = isset($_GET['unv_id']) ? $_GET['unv_id'] : ''; // Get the 'unv_id' par
 <section class="product_list pt-5">
     <div class="container">
         <div class="row">
-<div class="col-md-8">
+            <div class="col-md-8">
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div class="alert alert-success" role="alert">
+                        <?php echo $_SESSION['message']; ?>
+                    </div>
+                    <?php unset($_SESSION['message']); ?>
+                <?php endif; ?>
                 <div class="product_list">
                     <div class="row">
-                    <?php 
+                        <?php 
                         // Fetch the chambers from the database
                         $chambers = getChambersByUniversityStay($unv_id); 
-                       
-
                         while($chamber = mysqli_fetch_assoc($chambers)) {
-                             // Extract the first image from the images string
-                        $images = explode(",", $chamber['images']);
-                        $firstImage = count($images) > 0 ? $images[0] : '';
+                            // Extract the first image from the images string
+                            $images = explode(",", $chamber['images']);
+                            $firstImage = count($images) > 0 ? $images[0] : '';
                         ?>
 
                         <div class="col-lg-6 col-sm-6">
@@ -47,11 +51,12 @@ $unv_id = isset($_GET['unv_id']) ? $_GET['unv_id'] : ''; // Get the 'unv_id' par
 
                         <?php 
                         } 
-                    ?>
+                        ?>
                     </div>
-                    
                 </div>
             </div>
-            </div>
-            </div>
+        </div>
+    </div>
+</section>
+
 <?php include('includes/footer.php'); ?>
