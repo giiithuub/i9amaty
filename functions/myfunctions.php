@@ -108,6 +108,38 @@ function saveMessage($name, $email, $subject, $message) {
     }
 }
 
+function getChamberDates($id)
+{
+    global $con;
+    // Prepare the SQL statement
+    $query = "SELECT available_date_to, available_date_from FROM chambers WHERE id=? LIMIT 1";
+
+    // Create a prepared statement
+    $stmt = $con->prepare($query);
+
+    // Check if the prepared statement is not false
+    if ($stmt === false) {
+        return false;
+    }
+
+    // Bind parameters
+    $stmt->bind_param('i', $id); // 'i' indicates integer
+
+    // Execute the query
+    $stmt->execute();
+
+    // Get the result
+    $result = $stmt->get_result();
+
+    // Fetch data
+    $data = $result->fetch_assoc();
+
+    // Free result and close statement
+    $result->free();
+    $stmt->close();
+
+    return $data;
+}
 
 
 
