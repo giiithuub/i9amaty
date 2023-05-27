@@ -13,14 +13,16 @@ function createReservation($chamberId, $unvId, $fromDate, $toDate, $totalPrice, 
     $stmt = $con->prepare(
         "INSERT INTO reservations (
             chamber_id, unv_id, from_date, to_date, total_price, num_days, 
-            first_name, last_name, phone_number, address, city, state, postcode, user_id
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
+            first_name, last_name, phone_number, address, city, state, postcode, user_id, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
     $stmt->bind_param(
-        "iisssssssssssi", 
+        "iisssssssssssis", 
         $chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, 
         $userInfo['firstName'], $userInfo['lastName'], $userInfo['phoneNumber'], 
-        $userInfo['address'], $userInfo['city'], $userInfo['state'], $userInfo['postcode'], $userId);
+        $userInfo['address'], $userInfo['city'], $userInfo['state'], $userInfo['postcode'], $userId, $status);
+    
+    $status = 'pending';
     
     $stmt->execute();
 

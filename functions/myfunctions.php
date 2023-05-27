@@ -161,7 +161,7 @@ function getUserById($userId) {
     global $con;
     $userId = mysqli_real_escape_string($con, $userId);
 
-    $query = "SELECT * FROM users WHERE id = '$userId' LIMIT 1";
+    $query = "SELECT * FROM users WHERE user_id = '$userId' LIMIT 1";
     $result = mysqli_query($con, $query);
     $row = mysqli_fetch_assoc($result);
 
@@ -177,6 +177,28 @@ function getChamberById($chamberId) {
     $row = mysqli_fetch_assoc($result);
 
     return $row;
+}
+
+function acceptReservation($reservationId) {
+    global $con;
+    $reservationId = mysqli_real_escape_string($con, $reservationId);
+    $query = "UPDATE reservations SET status = 'accepted' WHERE id = '$reservationId'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+
+function declineReservation($reservationId) {
+    global $con;
+    $reservationId = mysqli_real_escape_string($con, $reservationId);
+    $query = "UPDATE reservations SET status = 'declined' WHERE id = '$reservationId'";
+    $result = mysqli_query($con, $query);
+    return $result;
+}
+function getAllReservations() {
+    global $con;
+    $query = "SELECT * FROM reservations";
+    $result = mysqli_query($con, $query);
+    return $result; // returning mysqli_result, not array
 }
 
 ?>

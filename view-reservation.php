@@ -1,7 +1,5 @@
 <?php
-
 session_start();
-
 include('functions/myfunctions.php');
 include('includes/header.php');
 include('config/dbcon.php');
@@ -16,8 +14,14 @@ if (isset($_POST['cancel'])) {
     $sql = "DELETE FROM reservations WHERE id = $reservation_id";
     mysqli_query($con, $sql);
 }
-
 ?>
+<style>
+    .custom-row{
+        
+        align-items: center;
+        font-size: 1.2em;
+    }
+</style>
 
 <div class="py-3 bg-dark">
     <div class="container">
@@ -25,68 +29,55 @@ if (isset($_POST['cancel'])) {
     </div>
 </div>
 
-<div class="py-5">
-    <div class="container">
-        <div class="card card-body shadow">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <h6>User</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <h6>Chamber Name</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <h6>From Date</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <h6>To Date</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <h6>Total Price</h6>
-                        </div>
-                        <div class="col-md-2">
-                            <h6>Cancel Reservation</h6>
-                        </div>
-                    </div>
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Reservations</h4>
                 </div>
-
-                <?php 
-                $reservations = getChamberReservations($_COOKIE['user_id']);
-                foreach ($reservations as $reservation) {
-                    $user = getUserById($reservation['user_id']);
-                    $chamber = getChamberById($reservation['chamber_id']);
-                ?>
-
-                    <div class="card product-data border-success mb-3">
-                        <form action="" method="post" class="row align-items-center">
-                            <div class="col-md-2">
-                                <h5><?= $user['name'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <h5><?= $chamber['name'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <h5><?= $reservation['from_date'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <h5><?= $reservation['to_date'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <h5><?= $reservation['total_price'] ?></h5>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="hidden" name="reservation_id" value="<?= $reservation['id'] ?>">
-                                <button class="btn btn-warning btn-sm" name="cancel">
-                                    <i class="fa fa-trash me-2"></i> Cancel</a>
-                            </div>
-                        </form>
-                    </div>
-
-                <?php    
-                }
-                ?>
+                <div class="card-body" id="reservation_table">
+                    <table class="table table-bordred table-striped table-hover">
+                        <thead class="table-info">
+                            <tr>
+                                <th>Chamber Image</th>
+                                <th>Chamber Name</th>
+                                <th>From Date</th>
+                                <th>To Date</th>
+                                <th>Total Price</th>
+                                <th>Status</th>
+                                <th>Cancel Reservation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            $reservations = getChamberReservations($_COOKIE['user_id']);
+                            foreach ($reservations as $reservation) {
+                                $user = getUserById($reservation['user_id']);
+                                $chamber = getChamberById($reservation['chamber_id']);
+                                $images = explode(",", $chamber['images']);
+                                $firstImage = count($images) > 0 ? $images[0] : '';
+                            ?>
+                                <tr>
+                                    <td><img src="admin/<?= $firstImage ?>" alt="<?= $chamber['name'] ?>" style="max-width:3rem; max-height: 5rem;"/></td>
+                                    <td class="pt-4 custom-row"><?= $chamber['name'] ?></td>
+                                    <td class="pt-4 custom-row"><?= $reservation['from_date'] ?></td>
+                                    <td class="pt-4 custom-row"><?= $reservation['to_date'] ?></td>
+                                    <td class="pt-4 custom-row"><?= $reservation['total_price'] ?></td>
+                                    <td class="pt-4 custom-row"><?= $reservation['status']; ?></td>
+                                    <td>
+                                        <form action="" method="post">
+                                            <input type="hidden" name="reservation_id" value="<?= $reservation['id'] ?>">
+                                            <button class="btn btn-warning btn-sm" name="cancel"><i class="fa fa-trash me-2"></i> Cancel</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php    
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
