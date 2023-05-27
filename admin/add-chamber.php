@@ -16,7 +16,7 @@ include('includes/header.php');
                     <h4>Add Chamber</h4>
                 </div>
                 <div class="card-body">
-                    <form action="code.php" method="POST" enctype="multipart/form-data">
+                    <form action="code.php" method="POST" enctype="multipart/form-data" id="add-chamber-form" >
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark" for="name">Chamber Name</label>
@@ -124,11 +124,14 @@ include('includes/header.php');
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark" for="available_date_from">Available Date From</label>
-                                <input type="date" required name="available_date_from" class="form-control mb-3">
+                                <input type="date" required name="available_date_from" id="available_date_from" class="form-control mb-3">
+                                <small class="text-danger" id="date-error" style="display: none;">End date should be after the start date.</small>
+
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark" for="available_date_to">Available Date To</label>
-                                <input type="date" required name="available_date_to" class="form-control mb-3">
+                                <input type="date" required name="available_date_to" id="available_date_to" class="form-control mb-3">
+                               
                             </div>
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary" name="add_chamber_btn">Save</button>
@@ -141,6 +144,7 @@ include('includes/header.php');
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.querySelector('input[type="file"]').onchange = function() {
         let files = document.querySelector('input[type="file"]').files;
@@ -169,6 +173,33 @@ include('includes/header.php');
             [].forEach.call(files, readAndPreview);
         }
     };
+
+    // Disable dates before selected start date
+    $(document).ready(function() {
+        $("#available_date_from").on("change", function() {
+            var selectedStartDate = new Date($(this).val());
+            $("#available_date_to").attr("min", $(this).val());
+
+            // Clear end date if it is before the selected start date
+            var selectedEndDate = new Date($("#available_date_to").val());
+            if (selectedEndDate < selectedStartDate) {
+                $("#available_date_to").val("");
+            }
+        });
+
+        // Validation for start date and end date
+        $("#add-chamber-form").on("submit", function(event) {
+            var startDate = new Date($("#available_date_from").val());
+            var endDate = new Date($("#available_date_to").val());
+
+            if (endDate < startDate) {
+                event.preventDefault(); // Prevent form submission
+                $("#date-error").text("End date should be after the start date.").show();
+            } else {
+                $("#date-error").hide();
+            }
+        });
+    });
 </script>
 
 <?php include('includes/footer.php');?>
