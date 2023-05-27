@@ -120,6 +120,8 @@ if (isset($_POST['reserve_button'])) {
         header('Location: ../view-reservation.php');
     }
 }
+
+
 ?>
 
 

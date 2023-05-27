@@ -2,25 +2,43 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+ob_start(); // Start output buffering
 
 session_start();
 include('../config/dbcon.php');
 
-function createReservation($chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, $userInfo) {
-    global $con; // Access your database connection
+function createReservation($chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, $userInfo, $userId) {
+    global $con; 
 
-    // Prepare an SQL statement
-    $stmt = $con->prepare("INSERT INTO reservations (chamber_id, unv_id, from_date, to_date, total_price, num_days, user_info) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $con->prepare(
+        "INSERT INTO reservations (
+            chamber_id, unv_id, from_date, to_date, total_price, num_days, 
+            first_name, last_name, phone_number, address, city, state, postcode, user_id
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    // Bind parameters to the SQL statement using references
-    $userInfoJson = json_encode($userInfo);
-    $stmt->bind_param("iisssss", $chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, $userInfoJson);
+    $stmt->bind_param(
+        "iisssssssssssi", 
+        $chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, 
+        $userInfo['firstName'], $userInfo['lastName'], $userInfo['phoneNumber'], 
+        $userInfo['address'], $userInfo['city'], $userInfo['state'], $userInfo['postcode'], $userId);
     
-    // Execute the SQL statement
     $stmt->execute();
 
-    // Return true or false based on success
     return $stmt->affected_rows === 1;
+}
+
+function checkDuplicateReservation($firstName, $lastName, $startDate, $endDate) {
+    global $con;
+    $firstName = mysqli_real_escape_string($con, $firstName);
+    $lastName = mysqli_real_escape_string($con, $lastName);
+    $startDate = mysqli_real_escape_string($con, $startDate);
+    $endDate = mysqli_real_escape_string($con, $endDate);
+
+    $query = "SELECT COUNT(*) AS count FROM reservations WHERE first_name = '$firstName' AND last_name = '$lastName' AND ('$startDate' BETWEEN from_date AND to_date OR '$endDate' BETWEEN from_date AND to_date)";
+    $result = mysqli_query($con, $query);
+    $data = mysqli_fetch_assoc($result);
+
+    return $data['count'] > 0;
 }
 
 
@@ -32,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $toDate = $_POST['end_date'];
     $totalPrice = $_POST['total'];
     $numDays = $_POST['num_days'];
+      $userId = $_COOKIE['user_id']; // Retrieving user_id from cookie
+    // Retrieving user_id from cookie
 
     // Extract user information
     $userInfo = [
@@ -43,30 +63,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'state' => $_POST['state'],
         'postcode' => $_POST['postcode']
     ];
+
     if (checkDuplicateReservation($userInfo['firstName'], $userInfo['lastName'], $fromDate, $toDate)) {
         $_SESSION['message'] = 'You have already made a reservation within this date range!';
-        echo "Redirecting...";
         header('Location: ../view-reservation.php');
         exit();
     }
 
     // Create reservation
-    createReservation($chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, $userInfo);
+    $reservationCreated = createReservation($chamberId, $unvId, $fromDate, $toDate, $totalPrice, $numDays, $userInfo, $userId);
+    if($reservationCreated){
+        $_SESSION['message'] = 'Reservation created successfully!';
+        header('Location: ../view-reservation.php'); // redirect to the desired page
+    } else {
+        $_SESSION['message'] = 'There was a problem creating the reservation.';
+        header('Location: ../reservation-form.php'); // redirect back to the form page
+    }
+    exit();
 }
 
-function checkDuplicateReservation($firstName, $lastName, $startDate, $endDate) {
-    global $con;
-    $firstName = mysqli_real_escape_string($con, $firstName);
-    $lastName = mysqli_real_escape_string($con, $lastName);
-    $startDate = mysqli_real_escape_string($con, $startDate);
-    $endDate = mysqli_real_escape_string($con, $endDate);
-
-    $query = "SELECT COUNT(*) AS count FROM reservations WHERE JSON_EXTRACT(user_info, '$.firstName') = '$firstName' AND JSON_EXTRACT(user_info, '$.lastName') = '$lastName' AND ('$startDate' BETWEEN from_date AND to_date OR '$endDate' BETWEEN from_date AND to_date)";
-    $result = mysqli_query($con, $query);
-    $data = mysqli_fetch_assoc($result);
-
-    return $data['count'] > 0;
-}
-
-
+ob_end_flush(); // End output buffering
 ?>

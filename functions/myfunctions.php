@@ -141,7 +141,42 @@ function getChamberDates($id)
     return $data;
 }
 
+function getChamberReservations($userId) {
+    global $con;
+    $userId = mysqli_real_escape_string($con, $userId);
+
+    $query = "SELECT * FROM reservations WHERE user_id = '$userId'";
+    $result = mysqli_query($con, $query);
+
+    $reservations = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+        $reservations[] = $row;
+    }
+
+    return $reservations;
+}
 
 
+function getUserById($userId) {
+    global $con;
+    $userId = mysqli_real_escape_string($con, $userId);
+
+    $query = "SELECT * FROM users WHERE id = '$userId' LIMIT 1";
+    $result = mysqli_query($con, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row;
+}
+
+function getChamberById($chamberId) {
+    global $con;
+    $chamberId = mysqli_real_escape_string($con, $chamberId);
+
+    $query = "SELECT * FROM chambers WHERE id = '$chamberId' LIMIT 1";
+    $result = mysqli_query($con, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row;
+}
 
 ?>
