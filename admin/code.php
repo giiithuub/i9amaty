@@ -52,61 +52,71 @@
         }
     }
 
-    if (isset($_POST['add_chamber_btn'])) {
-        $name = $_POST['name'];
-        $slug = $_POST['slug'];
-        $small_description = $_POST['small_description'];
-        $description = $_POST['description'];
-        $price = $_POST['price'];
-        $unv_id = $_POST['unv_id'];
-       
-        $room_type = $_POST['room_type'];
 
-        $unv = getByID("university_stays", $unv_id);
-        $unv_name = $unv['name'];
-    
-    
-        $status = isset($_POST['status']) ? 1 : 0;
-        $capacity = $_POST['capacity'];
-        $bathroom = isset($_POST['bathroom']) ? 1 : 0;
-        $kitchen = isset($_POST['kitchen']) ? 1 : 0;
-        $ac = isset($_POST['ac']) ? 1 : 0;
-        $heating = isset($_POST['heating']) ? 1 : 0;
-        $furnished = isset($_POST['furnished']) ? 1 : 0;        
-        $size = $_POST['size'];
-        $balcony = isset($_POST['balcony']) ? 1 : 0;
-        $laundry = isset($_POST['laundry']) ? 1 : 0;
-        $pet_friendly = isset($_POST['pet_friendly']) ? 1 : 0;
-    
-        $images = [];
-        if (isset($_FILES['images'])) {
-            foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                $file_name = $_FILES['images']['name'][$key];
-                $file_tmp = $_FILES['images']['tmp_name'][$key];
-    
-                // Assuming you want to put images into an 'uploads/' directory
-                $newFilePath = "uploads/" . $file_name;
-                if (move_uploaded_file($file_tmp, $newFilePath)) {
-                    $images[] = $newFilePath;
-                }
+if (isset($_POST['add_chamber_btn'])) {
+    $name = $_POST['name'];
+    $slug = $_POST['slug'];
+    $small_description = $_POST['small_description'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $unv_id = $_POST['unv_id'];
+
+    $room_type = $_POST['room_type'];
+
+    $unv = getByID("university_stays", $unv_id);
+    $unv_name = $unv['name'];
+
+
+    $status = isset($_POST['status']) ? 1 : 0;
+    $capacity = $_POST['capacity'];
+    $bathroom = isset($_POST['bathroom']) ? 1 : 0;
+    $kitchen = isset($_POST['kitchen']) ? 1 : 0;
+    $ac = isset($_POST['ac']) ? 1 : 0;
+    $heating = isset($_POST['heating']) ? 1 : 0;
+    $furnished = isset($_POST['furnished']) ? 1 : 0;        
+    $size = $_POST['size'];
+    $balcony = isset($_POST['balcony']) ? 1 : 0;
+    $laundry = isset($_POST['laundry']) ? 1 : 0;
+    $pet_friendly = isset($_POST['pet_friendly']) ? 1 : 0;
+
+    $images = [];
+    if (isset($_FILES['images'])) {
+        foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
+            $file_name = $_FILES['images']['name'][$key];
+            $file_tmp = $_FILES['images']['tmp_name'][$key];
+
+            // Assuming you want to put images into an 'uploads/' directory
+            $newFilePath = "uploads/" . $file_name;
+            if (move_uploaded_file($file_tmp, $newFilePath)) {
+                $images[] = $newFilePath;
             }
         }
-        $imagesStr = implode(",", $images);
-    
-        $query = "INSERT INTO chambers (name, slug, small_description, description, price, status, capacity, bathroom, kitchen, ac, heating, furnished, size, balcony, laundry, pet_friendly, images, unv_id, unv_name, room_type)
-                  VALUES ('$name', '$slug', '$small_description', '$description', '$price', '$status', '$capacity', '$bathroom', '$kitchen', '$ac', '$heating', '$furnished', '$size', '$balcony', '$laundry', '$pet_friendly', '$imagesStr', '$unv_id', '$unv_name', '$room_type')";
-    
-        $query_run = mysqli_query($con, $query);
-        
-        if ($query_run) {
-            $_SESSION['message'] = "Chamber Added";
-            header('Location: index.php');
-        } else {
-            $_SESSION['message'] = "Chamber Not Added";
-            header('Location: add-chamber.php');
-        }
-        
     }
+    $imagesStr = implode(",", $images);
+
+    $available_date_from = $_POST['available_date_from'];
+    $available_date_to = $_POST['available_date_to'];
+
+    $query = "INSERT INTO chambers (name, slug, small_description, description, price, status, capacity, bathroom, kitchen, ac, heating, furnished, size, balcony, laundry, pet_friendly, images, unv_id, unv_name, room_type, available_date_from, available_date_to)
+              VALUES ('$name', '$slug', '$small_description', '$description', '$price', '$status', '$capacity', '$bathroom', '$kitchen', '$ac', '$heating', '$furnished', '$size', '$balcony', '$laundry', '$pet_friendly', '$imagesStr', '$unv_id', '$unv_name', '$room_type', '$available_date_from', '$available_date_to')";
+
+    $query_run = mysqli_query($con, $query);
+
+    if ($query_run) {
+        $_SESSION['message'] = "Chamber Added";
+        header('Location: chambers.php');
+    } else {
+        $_SESSION['message'] = "Chamber Not Added";
+        header('Location: add-chamber.php');
+    }
+}
+
+
+
+
+
+
+
     
 
 

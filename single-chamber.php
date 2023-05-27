@@ -45,7 +45,6 @@ if (isset($_GET['id'])) {
     if ($chamber) {
         $images = explode(",", $chamber['images']);
         ?>
-        <!--================Single Chamber Area =================-->
         <div class="container mt-5 mb-5">
             <div class="card">
                 <div class="row g-0">
@@ -101,20 +100,25 @@ if (isset($_GET['id'])) {
                 </div>
             </div>
         </div>
+       
         <div class="footer-container">
-            <h3>$<?= $chamber['price'] ?>/month</h3>
-            <!-- Placeholder for Location and Available Date -->
-            <h4>Location: TBD</h4>
-            <h4>Available Date: TBD</h4>
-            <button class="btn btn-dark">Reserve Now</button>
+        <h3>$<?= $chamber['price'] ?>/month</h3>
+        <h4>Location: TBD</h4>
+        <div class="date-info">
+        <h4>Available Date From:   <span><?= $chamber['available_date_from'] ?></span></h4>
+          
+
+            <h4>Available To:  <span><?= $chamber['available_date_to'] ?></span></h4>
+           
         </div>
-        <script>
-            function changeImage(element) {
-                var main_product_image = document.getElementById('main_product_image');
-                main_product_image.src = element.src;
-            }
-        </script>
-        <!--================End Single Chamber Area =================-->
+       <a href="reservation.php?id=<?= $chamber['id'] ?>"> <button class="btn btn-dark">Reserve Now</button></a>
+    </div>
+    <script>
+    function changeImage(element) {
+        var main_product_image = document.getElementById('main_product_image');
+        main_product_image.src = element.src;
+    }
+</script>
     <?php
     } else {
         echo "<h2 class='text-center'>Chamber not found!</h2>";

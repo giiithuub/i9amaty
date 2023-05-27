@@ -63,9 +63,9 @@ include('includes/header.php');
                                 <label class="mb-0 fw-bold text-dark" for="room_type">Select Room Type</label>
                                 <select name="room_type" class="form-select mb-3" aria-label="Default select example">
                                     <option value="">Select Room Type</option>
-                                    <option value="Room Type 1">Single Room</option>
-                                    <option value="Room Type 2">Double Room</option>
-                                    <option value="Room Type 3">Shared Room</option>
+                                    <option value="Single Room">Single Room</option>
+                                    <option value="Double Room">Double Room</option>
+                                    <option value="Shared Room">Shared Room</option>
                                 </select>
                             </div>
 
@@ -124,13 +124,13 @@ include('includes/header.php');
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark" for="available_date_from">Available Date From</label>
-                                <input type="date" required name="available_date_from" id="available_date_from" class="form-control mb-3">
-                                <small class="text-danger" id="date-error" style="display: none;">End date should be after the start date.</small>
+                                <input type="date" required name="available_date_from" id="available_date_from" name="available_date_from" class="form-control mb-3">
+                                <small class="text-danger" id="date-error" style="display: none;" >End date should be after the start date.</small>
 
                             </div>
                             <div class="col-md-6">
                                 <label class="mb-0 fw-bold text-dark" for="available_date_to">Available Date To</label>
-                                <input type="date" required name="available_date_to" id="available_date_to" class="form-control mb-3">
+                                <input type="date" required name="available_date_to" id="available_date_to" name="available_date_to" class="form-control mb-3">
                                
                             </div>
                             <div class="col-md-12">
