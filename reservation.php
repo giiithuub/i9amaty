@@ -7,22 +7,38 @@ session_start();
 include('includes/header.php');
 include('config/dbcon.php');
 
+// Get the chamber ID and unv information from the URL
+        $chamberId = $_GET['id'];
+        $chamber = getByID('chambers',$chamberId);
+        $unv_id = isset($chamber['unv_id']) ? $chamber['unv_id'] : '';
 
-// put the parameters in the $index variable
-$link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
-// index.php link with the current parameters
 
-// Get the chamber ID from the URL
-$chamberId = $_GET['id']; // Replace 'id' with the actual key you are using in the URL
 
-// Fetch the available dates
-$dates = getChamberDates($chamberId);
+        // Fetch the available inforamtion
+        $dates = getChamberDates($chamberId);
+        $university = getByID('university_stays',$unv_id);
 
-// Extract the dates
-$from_date = isset($dates['available_date_from']) ? $dates['available_date_from'] : '';
-$to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : '';
 
+        // Extract the dates
+        $from_date = isset($dates['available_date_from']) ? $dates['available_date_from'] : '';
+        $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : '';
+
+        // Extract the price
+        $pricePerNight = isset($chamber['price']) ? $chamber['price'] : 0;
+
+        // Get today's date
+        $todaysDate = date("Y-m-d");
+
+        // Get the dates from form submission
+        $startDate = isset($_POST['start_date']) ? $_POST['start_date'] : '';
+        $endDate = isset($_POST['end_date']) ? $_POST['end_date'] : '';
+
+        // Calculate the total
+        $numDays = ceil((strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24));
+        $total = $numDays * $pricePerNight;
 ?>
+
+
  <!-- breadcrumb part start-->
  <section class="breadcrumb_part">
         <div class="container">
@@ -51,33 +67,33 @@ $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : ''
             <h4>order info</h4>
             <ul>
               <li>
-                <p>data</p><span>: Oct 03, 2017</span>
-              </li>
+              <p>Order Date</p><span>: <?php echo $todaysDate; ?></span>
+                          
               <li>
-                <p>total</p><span>: USD 2210</span>
-              </li>
+              <p>Price Per Night</p><span>: USD <?php echo $pricePerNight; ?></span>
               <li>
-                <p>mayment methord</p><span>: Check payments</span>
+                <p>mayment method</p><span>: Check payments</span>
               </li>
             </ul>
           </div>
         </div>
         <div class="col-lg-6 col-lx-4">
-          <div class="single_confirmation_details">
-            <h4>University Stay Address</h4>
-            <ul>
-              <li>
-                <p>city</p><span>: Los Angeles</span>
-              </li>
-              <li>
-                <p>country</p><span>: United States</span>
-              </li>
-              <li>
-                <p>postcode</p><span>: 36952</span>
-              </li>
-            </ul>
-          </div>
+            <div class="single_confirmation_details">
+                <h4>University Stay Address</h4>
+                <ul>
+                    <li>
+                        <p>city</p><span>: <?php echo isset($university['city']) ? $university['city'] : ''; ?></span>
+                    </li>
+                    <li>
+                        <p>State</p><span>: <?php echo isset($university['state']) ? $university['state'] : ''; ?></span>
+                    </li>
+                    <li>
+                        <p>Country</p><span>: <?php echo isset($university['country']) ? $university['country'] : ''; ?></span>
+                    </li>
+                </ul>
+            </div>
         </div>
+
 
         <div class="billing_details pt-5">
           <div class="row">
@@ -113,7 +129,9 @@ $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : ''
                 </div>
                 <div class="col-md-12 form-group">
                   <div class="creat_account">
-                    <h3>Shipping Details</h3>
+                    <h3>Order Details</h3>
+                    <input type="hidden" id="price_per_night" value="<?php echo $pricePerNight; ?>">
+
                   </div>
                   <textarea class="form-control" name="message" id="message" rows="1" placeholder="Order Notes"></textarea>
                 </div>
@@ -124,7 +142,7 @@ $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : ''
                 </div>
                 <div class="col-md-12 form-group">
                     <label for="end_date">End Date</label>
-                    <input type="date" class="form-control" id="start_date" name="start_date" placeholder="Start Date" min="<?php echo $from_date; ?>" max="<?php echo $to_date; ?>" required />
+                    <input type="date" class="form-control" id="end_date" name="end_date" placeholder="End Date" min="<?php echo $from_date; ?>" max="<?php echo $to_date; ?>" required />
                     <small class="text-danger" id="date-error" style="display: none;">End date should be after the start date.</small>
                 </div>
                 <div class="col-md-12 form-group">
@@ -146,11 +164,9 @@ $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : ''
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th colspan="2"><span>Pixelstore fresh Blackberry</span></th>
-                      <th>x02</th>
-                      <th><span>$720.00</span></th>
-                    </tr>
+                  <th colspan="2"><span><?php echo $chamber['name']; ?></span></th>
+                    <th><span id="duration">days</span></th>
+                    <th><span id="total">DZD 0.00</span></th>
                   </tbody>
                   <tfoot>
                     <tr>
@@ -193,4 +209,71 @@ $to_date = isset($dates['available_date_to']) ? $dates['available_date_to'] : ''
       document.getElementById("date-error").style.display = "none";
     }
   });
+
+  $(document).ready(function() {
+    $("#start_date").on("change", function() {
+        var selectedStartDate = new Date($(this).val());
+        $("#end_date").attr("min", $(this).val());
+
+      
+        var selectedEndDate = new Date($("#end_date").val());
+        if (selectedEndDate < selectedStartDate) {
+            $("#end_date").val("");
+        }
+        
+    });
+
+    $("#end_date").on("change", function() {
+        var selectedEndDate = new Date($(this).val());
+        $("#start_date").attr("max", $(this).val());
+
+        // Clear start date if it is after the selected end date
+        var selectedStartDate = new Date($("#start_date").val());
+        if (selectedEndDate < selectedStartDate) {
+            $("#start_date").val("");
+        }
+    });
+
+    // Validation for start date and end date
+    $(".contact_form").on("submit", function(event) {
+        var startDate = new Date($("#start_date").val());
+        var endDate = new Date($("#end_date").val());
+
+        if (endDate < startDate) {
+            event.preventDefault(); // Prevent form submission
+            $("#date-error").show();
+        } else {
+            $("#date-error").hide();
+        }
+    });
+});
+
+
+$(document).ready(function() {
+    var pricePerNight = $("#price_per_night").val();
+
+    // When either date input changes
+    $("#start_date, #end_date").change(function() {
+        var startDate = new Date($("#start_date").val());
+        var endDate = new Date($("#end_date").val());
+
+        if(startDate != "" && endDate != ""){
+            var timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+            var numDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+
+            // Update the duration and total
+            $("#duration").text( numDays + 'Days' );
+            $("#total").text('DZD ' + (numDays * pricePerNight).toFixed(2));
+        } else {
+            $("#duration").text('0 days');
+            $("#total").text('DZD 0.00');
+        }
+    });
+});
+
+
+
+
+
+
 </script>
