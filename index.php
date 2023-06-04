@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 session_start();
     include('includes/header.php');
-    include('config/dbcon.php');
     
     
 // put the parameters in the $index variable
@@ -21,11 +20,11 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-5">
-                    <div class="banner_text">
+                    <div class="banner_text pt-5">
                         <div class="banner_text_iner">
-                            <h1>Comfortable University Stays</h1>
-                            <p>Experience our well-furnished chambers designed for your convenience and comfort.</p>
-                            <a href="chamber_list.php" class="btn_1">Explore Now</a>
+                            <h1>The Best Offers</h1>
+                            <p>Benefit from the cheapest offers you can get.</p>
+                            <a href="product_list.php" class="btn_1">Explore Now</a>
                         </div>
                     </div>
                 </div>
@@ -50,17 +49,17 @@ $link = "http://" . $_SERVER['SERVER_NAME'] . '/UniStay';
         </div>
         <div class="row">
             <?php 
-            $universityStays = getAll("university_stays");
-            while($row = mysqli_fetch_assoc($universityStays)){
+            $categories = getAll("Categories");
+            while($row = mysqli_fetch_assoc($categories)){
                 $images = explode(",", $row['images']);
                 $firstImage = count($images) > 0 ? $images[0] : '';
             ?>
             <div class="col-lg-4 col-sm-6 mb-4 d-flex align-items-stretch">
-                <div class="card shadow-lg rounded" style="width: 26rem;">
-                    <img src="admin/<?= $firstImage ?>" class="card-img-top" alt="#">
+                <div class="card shadow-lg rounded" style="width: 15rem; ">
+                    <img src="admin/<?= $firstImage ?>" class="card-img-top"style="width: 18rem;" alt="#">
                     <div class="card-body d-flex flex-column justify-content-center text-center">
                         <h3 style="color : #4B3049 ;"><a style="color : #4B3049 ;" href="single-chamber.html"><?= $row['name'] ?></a></h3> 
-                        <a href="unv_stay.php?id=<?= $row['id']?>" class="btn btn_3 mt-3 align-self-center">Explore</a>
+                        <a href="category.php?id=<?= $row['id']?>" class="btn btn_3 mt-3 align-self-center">Explore</a>
                     </div>
                 </div>
             </div>

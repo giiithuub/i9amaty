@@ -1,23 +1,49 @@
   
 
-    <!-- Subscribe part here -->
-    <section class="subscribe_part section_padding">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="subscribe_part_content">
-                        <h2>Get Promotions & Updates!</h2>
-                        <p>Subscribe to our newsletter to receive promotions and updates about our university stays.</p>
-                        <div class="subscribe_form">
-                            <input type="email" placeholder="Enter your email">
-                            <a href="#" class="btn_1">Subscribe</a>
-                        </div>
+
+    
+   <?php
+require_once 'config/db_config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+
+    // Validate the email (you can add more validation if needed)
+
+    $sql = "INSERT INTO Emails (email) VALUES ('$email')";
+
+    if ($con->query($sql) === true) {
+        $message = "Thank you for subscribing!";
+    } else {
+        $message = "Sorry, an error occurred. Please try again.";
+    }
+}
+
+$con->close();
+?>
+
+<section class="subscribe_part section_padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="subscribe_part_content">
+                    <h2>Get Promotions & Updates!</h2>
+                    <p>Subscribe to our newsletter to receive promotions and updates about our university stays.</p>
+                    <div class="subscribe_form">
+                        <form action="" method="POST">
+                            <input type="email" name="email" placeholder="Enter your email" required>
+                            <button type="submit" class="btn_1">Subscribe</button>
+                        </form>
+                        <?php if (isset($message)) : ?>
+                            <p><?php echo $message; ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Subscribe part end -->
+    </div>
+</section>
+
 
 
     <!--::footer_part start::-->
@@ -95,3 +121,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 </body>
 
 </html>
+
+<?php
+ob_end_flush(); // Send all output to the browser at the end of the script
+?>

@@ -53,3 +53,7 @@
 
 </body>
 </html>
+
+<?php
+ob_end_flush(); // Send all output to the browser at the end of the script
+?>

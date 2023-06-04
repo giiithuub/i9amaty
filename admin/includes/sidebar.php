@@ -1,65 +1,63 @@
-<?php
-  $page = substr($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'],"/") + 1);
-  ?>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary ">
+    <div class="container-fluid">
+        <a class="navbar-brand m-0" href="#">
+            <span class="ms-1 font-weight-bold text-white">Admin Dashboard</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white <?= $page == 'products.php' || $page == 'add-product.php' ? 'active' : ''; ?>" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons opacity-10">shopping_cart</i>
+                        <span class="nav-link-text ms-1">Products</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                        <li><a class="dropdown-item <?= $page == 'products.php' ? 'active' : ''; ?>" href="products.php">All Products</a></li>
+                        <li><a class="dropdown-item <?= $page == 'add-product.php' ? 'active' : ''; ?>" href="add-product.php">Add Product</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white <?= $page == 'categories.php' || $page == 'add-category.php' ? 'active' : ''; ?>" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons opacity-10">category</i>
+                        <span class="nav-link-text ms-1">Categories</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                        <li><a class="dropdown-item <?= $page == 'categories.php' ? 'active' : ''; ?>" href="categories.php">All Categories</a></li>
+                        <li><a class="dropdown-item <?= $page == 'add-category.php' ? 'active' : ''; ?>" href="add-category.php">Add Category</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white <?= $page == 'distributors.php' || $page == 'add-distributor.php' ? 'active' : ''; ?>" href="#" id="distributorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons opacity-10">people</i>
+                        <span class="nav-link-text ms-1">Distributors</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="distributorsDropdown">
+                        <li><a class="dropdown-item <?= $page == 'distributors.php' ? 'active' : ''; ?>" href="distributors.php">All Distributors</a></li>
+                        <li><a class="dropdown-item <?= $page == 'add-distributor.php' ? 'active' : ''; ?>" href="add-distributor.php">Add Distributor</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white <?= $page == 'product-distributors.php' || $page == 'add-product-distributor.php' ? 'active' : ''; ?>" href="#" id="productDistributorsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="material-icons opacity-10">assignment</i>
+                        <span class="nav-link-text ms-1">Product Distributors</span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="productDistributorsDropdown">
+                        <li><a class="dropdown-item <?= $page == 'product-distributors.php' ? 'active' : ''; ?>" href="product-distributors.php">All Product Distributors</a></li>
+                        <li><a class="dropdown-item <?= $page == 'add-product-distributor.php' ? 'active' : ''; ?>" href="add-product-distributor.php">Add Product Distributor</a></li>
+                    </ul>
+                </li>
 
 
-
-
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0   fixed-start   bg-gradient-dark" id="sidenav-main">
-    <div class="sidenav-header">
-      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">        
-        <span class="ms-1 font-weight-bold text-white">City Admin</span>
-      </a>
-    </div>
-    <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-      <li class="nav-item">
-          <a class="nav-link text-white <?= $page == 'reservations.php' ? 'active bg-gradient-primary' : "" ;?>" href="reservations.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">All Reservation</span>
-          </a>
-        </li>
-      <li class="nav-item">
-          <a class="nav-link text-white <?= $page == 'university-stays.php' ? 'active bg-gradient-primary' : "" ;?>" href="university-stays.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">university stays</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white <?= $page == 'chambers.php' ? 'active bg-gradient-primary' : "" ;?>" href="chambers.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">table_view</i>
-            </div>
-            <span class="nav-link-text ms-1">All Chamber</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white <?= $page == 'add-chamber.php' ? 'active bg-gradient-primary' : "" ;?>" href="add-chamber.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">add</i>
-            </div>
-            <span class="nav-link-text ms-1">Add Chamber</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white <?= $page == 'add-university-stay.php' ? 'active bg-gradient-primary' : "" ;?>" href="add-university-stay.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">add</i>
-            </div>
-            <span class="nav-link-text ms-1">Add University Stay</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
-        <div class="mx-3">
-        <a class="btn bg-gradient-primary mt-4 w-100" href="../logout.php">Logout</a>
+            </ul>
+        </div>
+        <div class="d-flex">
+            <a class="btn bg-gradient-primary mt-2 w-100" href="#">Logout</a>
         </div>
     </div>
-  </aside>
+</nav>

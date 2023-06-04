@@ -1,3 +1,6 @@
+
+<?php
+ob_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,12 +27,6 @@
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
   <!-- CSS Files -->
   <link id="pagestyle" href="assets/css/material-dashboard.min.css" rel="stylesheet" >
-  <script>
-    var feedbackMessage = "<?php echo $feedbackMessage; ?>";
-    if (feedbackMessage !== '') {
-        alertify.success(feedbackMessage);
-    }
-    <?php unset($_SESSION['message']); ?>
 </script>
   <style>
     .form-control {
@@ -48,7 +45,6 @@
     <?php include('sidebar.php'); ?>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <?php
-        include('../functions/myfunctions.php');
 
          include('navbar.php');
        
